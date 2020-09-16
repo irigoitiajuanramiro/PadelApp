@@ -9,6 +9,9 @@ import {
 import "../index.css";
 
 const LoginApp = (props) => {
+  
+  
+
   const [user, setUser] = useState({
     nombre: "",
     pass: "",
@@ -20,10 +23,11 @@ const LoginApp = (props) => {
       [e.target.name]: e.target.value,
     });
   };
+  
 
   const { history } = props;
   const handleSubmit = (e) => {
-    if (true) {
+    if () {
       history.push("/Home");
     } else alert("Su usuario no esta en la base de datos");
   };
