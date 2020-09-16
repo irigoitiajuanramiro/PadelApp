@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import {
   FormControl,
@@ -7,10 +7,25 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import "../index.css";
+
 const LoginApp = (props) => {
+  const [user, setUser] = useState({
+    nombre: "",
+    pass: "",
+  });
+
+  const handleOnChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const { history } = props;
   const handleSubmit = (e) => {
-    history.push("/Home");
+    if (true) {
+      history.push("/Home");
+    } else alert("Su usuario no esta en la base de datos");
   };
   return (
     <div className="container">
@@ -21,13 +36,21 @@ const LoginApp = (props) => {
 
         <FormControl>
           <InputLabel htmlFor="email">Email address</InputLabel>
-          <Input type="text" id="email" aria-describedby="my-helper-text" />
+          <Input
+            onChange={handleOnChange}
+            name="nombre"
+            type="text"
+            id="email"
+            aria-describedby="my-helper-text"
+          />
           <FormHelperText id="my-helper-text">Email personal.</FormHelperText>
         </FormControl>
 
         <FormControl>
           <InputLabel htmlFor="password">Password</InputLabel>
           <Input
+            onChange={handleOnChange}
+            name="pass"
             type="password"
             id="password"
             aria-describedby="my-helper-text"
