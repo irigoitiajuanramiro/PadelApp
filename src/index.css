@@ -25,7 +25,7 @@ body {
   margin-top: -120px;
   font-size: 3rem;
 }
-.button {
+button {
   text-decoration: none;
   width: 50%;
   background: transparent;
