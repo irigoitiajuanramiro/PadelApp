@@ -5,13 +5,18 @@ import {
   InputLabel,
   Input,
   FormHelperText,
+  Button
 } from "@material-ui/core";
 import "../index.css";
+import Typography from '@material-ui/core/Typography';
+const harcodedValues = {
+  user: 'ramiro@gmail.com',
+  password: '12341234'
+}
+
 
 const LoginApp = (props) => {
-  
-  
-
+  const [showLoginError, setShowLoginError] = useState(false)
   const [user, setUser] = useState({
     nombre: "",
     pass: "",
@@ -23,13 +28,13 @@ const LoginApp = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  
+
 
   const { history } = props;
   const handleSubmit = (e) => {
-    if () {
-      history.push("/Home");
-    } else alert("Su usuario no esta en la base de datos");
+    console.log(user, harcodedValues)
+    if (user.nombre === harcodedValues.user && user.pass === harcodedValues.password) history.push("/Home")
+    else setShowLoginError(true)
   };
   return (
     <div className="container">
@@ -43,7 +48,7 @@ const LoginApp = (props) => {
           <Input
             onChange={handleOnChange}
             name="nombre"
-            type="text"
+            type="email"
             id="email"
             aria-describedby="my-helper-text"
           />
@@ -63,9 +68,12 @@ const LoginApp = (props) => {
             Entre 6 y 12 caracteres.
           </FormHelperText>
         </FormControl>
-        <button className="button" onClick={handleSubmit}>
+        <Button style={{marginTop: '1em'}} variant="contained" color="primary" onClick={handleSubmit}>
           Submit
-        </button>
+        </Button>
+        {showLoginError && <Typography variant="h6" component="h2" color={'error'}>
+          Wrong user or password
+        </Typography>}
       </div>
     </div>
   );
