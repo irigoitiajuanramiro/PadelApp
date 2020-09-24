@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import {
   FormControl,
@@ -9,33 +9,38 @@ import {
 } from "@material-ui/core";
 import "../index.css";
 import Typography from '@material-ui/core/Typography';
-const harcodedValues = {
-  user: 'ramiro@gmail.com',
-  password: '12341234'
-}
+import {userLogin} from '../redux/actions/user'
+import { connect } from "react-redux";
 
 
 const LoginApp = (props) => {
-  const [showLoginError, setShowLoginError] = useState(false)
-  const [user, setUser] = useState({
+ // const [showLoginError, setShowLoginError] = useState(false)
+  const [us, setUser] = useState({
     nombre: "",
     pass: "",
   });
 
+  const {user, userLogin, history} = props
+
+  useEffect(() => {
+    if(user.isLogedIn) {
+      history.push('/home')
+    }
+  }, [user.isLogedIn]);
+
   const handleOnChange = (e) => {
     setUser({
-      ...user,
+      ...us,
       [e.target.name]: e.target.value,
     });
   };
 
 
-  const { history } = props;
   const handleSubmit = (e) => {
-    console.log(user, harcodedValues)
-    if (user.nombre === harcodedValues.user && user.pass === harcodedValues.password) history.push("/Home")
-    else setShowLoginError(true)
+   userLogin(us.nombre, us.pass)
   };
+
+  console.log(props)
   return (
     <div className="container">
       <div className="subcontainer">
@@ -71,12 +76,21 @@ const LoginApp = (props) => {
         <Button style={{marginTop: '1em'}} variant="contained" color="primary" onClick={handleSubmit}>
           Submit
         </Button>
-        {showLoginError && <Typography variant="h6" component="h2" color={'error'}>
-          Wrong user or password
+        {user.error && <Typography variant="h6" component="h2" color={'error'}>
+          {user.errormessage}
         </Typography>}
       </div>
     </div>
   );
 };
 
-export default withRouter(LoginApp);
+const mapDispatchToProps = dispatch => {
+  return {
+   userLogin:(email,password)=>dispatch(userLogin(email,password))
+  }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user
+})
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(LoginApp));

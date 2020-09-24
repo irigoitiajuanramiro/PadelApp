@@ -1,11 +1,14 @@
 
 const initialState = {
+    error:false,
+    errormessage:'',
     nombre: '',
     apellido: '',
     email: '',
     isLoading: false,
     isLogedIn: false
 }
+
 
 function userReducer(state = initialState, action) {
     switch (action.type) {
@@ -23,6 +26,12 @@ function userReducer(state = initialState, action) {
                   isLoading: false,
                   isLogedIn: true
               }
+              case 'USER_LOGIN_FAIL':
+                  return{
+                      ...state,
+                      error:true,
+                      errormessage: action.payload.errormessage
+                  }
         default:
           return state
       }
