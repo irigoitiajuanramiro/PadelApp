@@ -10,7 +10,7 @@ import "../index.css";
 
 const LoginApp = (props) => {
   
-  
+
 
   const [user, setUser] = useState({
     nombre: "",
