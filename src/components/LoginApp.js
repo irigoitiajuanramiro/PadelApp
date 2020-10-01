@@ -1,36 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import {
   FormControl,
   InputLabel,
   Input,
   FormHelperText,
+  Button
 } from "@material-ui/core";
 import "../index.css";
+import Typography from '@material-ui/core/Typography';
+import {userLogin} from '../redux/actions/user'
+import { connect } from "react-redux";
 
+<<<<<<< HEAD
 const LoginApp = (props) => {
   
 
+=======
+>>>>>>> 9acc606501516e3cb2952492883763e31260c828
 
-  const [user, setUser] = useState({
+const LoginApp = (props) => {
+ // const [showLoginError, setShowLoginError] = useState(false)
+  const [us, setUser] = useState({
     nombre: "",
     pass: "",
   });
 
+  const {user, userLogin, history} = props
+
+  useEffect(() => {
+    if(user.isLogedIn) {
+      history.push('/home')
+    }
+  }, [user.isLogedIn]);
+
   const handleOnChange = (e) => {
     setUser({
-      ...user,
+      ...us,
       [e.target.name]: e.target.value,
     });
   };
-  
 
-  const { history } = props;
+
   const handleSubmit = (e) => {
-    if () {
-      history.push("/Home");
-    } else alert("Su usuario no esta en la base de datos");
+   userLogin(us.nombre, us.pass)
   };
+
+  console.log(props)
   return (
     <div className="container">
       <div className="subcontainer">
@@ -43,7 +59,7 @@ const LoginApp = (props) => {
           <Input
             onChange={handleOnChange}
             name="nombre"
-            type="text"
+            type="email"
             id="email"
             aria-describedby="my-helper-text"
           />
@@ -63,12 +79,24 @@ const LoginApp = (props) => {
             Entre 6 y 12 caracteres.
           </FormHelperText>
         </FormControl>
-        <button className="button" onClick={handleSubmit}>
+        <Button style={{marginTop: '1em'}} variant="contained" color="primary" onClick={handleSubmit}>
           Submit
-        </button>
+        </Button>
+        {user.error && <Typography variant="h6" component="h2" color={'error'}>
+          {user.errormessage}
+        </Typography>}
       </div>
     </div>
   );
 };
 
-export default withRouter(LoginApp);
+const mapDispatchToProps = dispatch => {
+  return {
+   userLogin:(email,password)=>dispatch(userLogin(email,password))
+  }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user
+})
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(LoginApp));
